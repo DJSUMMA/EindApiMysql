@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Campaign;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CampaignController extends Controller
 {
@@ -27,6 +28,7 @@ class CampaignController extends Controller
 
         // forceer 2 decimalen
         $data['goal_amount'] = round($data['goal_amount'], 2);
+        
 
         $campaign = Campaign::create($data);
 
@@ -57,6 +59,8 @@ class CampaignController extends Controller
             $data['goal_amount'] = round($data['goal_amount'], 2);
         }
 
+        Log::info('campaign has been validated {id}', ['id' => $id]);
+
         $campaign->update($data);
 
         return response()->json($campaign);
@@ -73,6 +77,8 @@ class CampaignController extends Controller
     $campaign->is_active = false;
     $campaign->save();
 
+    Log::info('Campaign closed: {id}', ['id' => $id]);
+
     return response()->json([
         'message' => 'Campaign closed'
     ]);
@@ -81,6 +87,8 @@ class CampaignController extends Controller
     public function destroy($id)
     {
         Campaign::findOrFail($id)->delete();
+
+        Log::info('Campaign deleted: {id}', ['id' => $id]);
 
         return response()->json(['message' => 'Deleted']);
     }
