@@ -8,3 +8,4 @@ Route::apiResource('campaigns', CampaignController::class);
 
 Route::post('campaigns/{id}/donate', [DonationController::class, 'store']);
 Route::get('campaigns/{id}/donations', [DonationController::class, 'index']);
+Route::patch('/campaigns/{id}/close', [CampaignController::class, 'close']);

@@ -149,17 +149,45 @@ async function loadCampaigns() {
 async function createCampaign() {
     clearError();
 
-    await fetch(`${API}/campaigns`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            title: document.getElementById('title').value,
-            description: document.getElementById('description').value,
-            goal_amount: document.getElementById('goal_amount').value
-        })
-    });
+    const titleEl = document.getElementById('title');
+    const descEl = document.getElementById('description');
+    const goalEl = document.getElementById('goal_amount');
 
-    loadCampaigns();
+    try {
+        const res = await fetch(`${API}/campaigns`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                title: titleEl.value,
+                description: descEl.value,
+                goal_amount: goalEl.value
+            })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            showError(data.message || 'Failed to create campaign');
+            return;
+        }
+
+        console.log("Campaign created:", data);
+
+        // success feedback
+        alert("Campaign successfully created");
+
+        // input velden leegmaken
+        titleEl.value = "";
+        descEl.value = "";
+        goalEl.value = "";
+
+        // refresh list
+        loadCampaigns();
+
+    } catch (err) {
+        console.error(err);
+        showError("Network error");
+    }
 }
 
 async function startEdit(id) {
@@ -222,15 +250,18 @@ async function closeCampaign(id) {
         const data = await res.json();
 
         if (!res.ok) {
+            console.error('Close failed:', data);
             showError(data.error || data.message || 'Failed to close campaign');
             return;
         }
+
+        console.log(`Campaign ${id} closed`, data);
 
         alert('Campaign closed');
         loadCampaigns();
 
     } catch (err) {
-        console.error(err);
+        console.error('Network error while closing campaign:', err);
         showError('Network error');
     }
 }

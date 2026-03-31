@@ -62,6 +62,22 @@ class CampaignController extends Controller
         return response()->json($campaign);
     }
 
+    public function close($id)
+    {
+    $campaign = Campaign::findOrFail($id);
+
+    if (!$campaign->is_active) {
+        return response()->json(['error' => 'Already closed'], 400);
+    }
+
+    $campaign->is_active = false;
+    $campaign->save();
+
+    return response()->json([
+        'message' => 'Campaign closed'
+    ]);
+    }
+
     public function destroy($id)
     {
         Campaign::findOrFail($id)->delete();
