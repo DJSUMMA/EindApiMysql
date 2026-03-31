@@ -1,7 +1,7 @@
 <h1>Donatie API setup ReadMe</h1>
 <p>
 Open Command Prompt
-Run Git clone https://github.com/DJSUMMA/EindApiMysql.git 
+Run Git clone https://github.com/DJSUMMA/EindApiMysql.git
 Ga naar de plek waar je de applicatie hebt staan 
 (Bijvoorbeeld: cd voorbeeldmap1/onzinmap2/EindApiMySql)
 
