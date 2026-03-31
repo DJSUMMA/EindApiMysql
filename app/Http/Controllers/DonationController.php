@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 class DonationController extends Controller
 {
+    
     public function store(Request $request, $id)
 {
     $campaign = Campaign::findOrFail($id);
@@ -48,4 +49,5 @@ public function index($id)
         Donation::where('campaign_id', $id)->get()
     );
 }
+
 }
