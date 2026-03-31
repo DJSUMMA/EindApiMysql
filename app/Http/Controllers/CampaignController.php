@@ -25,11 +25,12 @@ class CampaignController extends Controller
             'regex:/^\d+(\.\d{1,2})?$/'
         ]
     ]);
+        log('info', 'Campaign data validated', ['data' => $data]);
 
         // forceer 2 decimalen
         $data['goal_amount'] = round($data['goal_amount'], 2);
         
-
+        
         $campaign = Campaign::create($data);
 
         return response()->json($campaign, 201);
