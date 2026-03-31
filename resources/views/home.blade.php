@@ -139,6 +139,7 @@ async function loadCampaigns() {
             <button onclick="startEdit(${c.id})">Edit</button>
             <button onclick="deleteCampaign(${c.id})">Delete</button>
             <button onclick="donate(${c.id})">Donate</button>
+            <button onclick="closeCampaign(${c.id})">Close Campaign</button>
         `;
 
         list.appendChild(div);
@@ -207,6 +208,31 @@ async function deleteCampaign(id) {
     });
 
     loadCampaigns();
+}
+
+async function closeCampaign(id) {
+    try {
+        const res = await fetch(`${API}/campaigns/${id}/close`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            showError(data.error || data.message || 'Failed to close campaign');
+            return;
+        }
+
+        alert('Campaign closed');
+        loadCampaigns();
+
+    } catch (err) {
+        console.error(err);
+        showError('Network error');
+    }
 }
 
 async function donate(id) {
